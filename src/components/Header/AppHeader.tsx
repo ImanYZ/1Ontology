@@ -53,7 +53,13 @@ import { Stack } from "@mui/system";
 import { getAuth } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { forwardRef, useCallback, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import mitLogo from "../../../public/CCI-logo.gif";
 import mitLogoDark from "../../../public/MIT-Logo-Dark.png";
 import {
@@ -108,6 +114,12 @@ const AppHeader = forwardRef(
     const [profileImage, setProfileImage] = useState("");
     const isProfileMenuOpen = Boolean(profileMenuOpen);
     const db = getFirestore();
+
+    useEffect(() => {
+      if (user?.imageUrl) {
+        setProfileImage(user.imageUrl);
+      }
+    }, [user]);
     const signOut = async () => {
       router.push(ROUTES.signIn);
       getAuth().signOut();
